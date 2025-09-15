@@ -14,9 +14,10 @@ import { JournalTagsModule } from './journal_tags/journal_tags.module';
 import { JournalReflectionsModule } from './journal_reflections/journal_reflections.module';
 import { JournalMediaModule } from './journal_media/journal_media.module';
 import { EmotionsByUserModule } from './emotions-by-user/emotions_by_user.module';
+import { GeminiModule } from './gemini/gemini.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(typeConfig()), EmotionsModule, EmotionsByUserModule,AuthModule, UsersModule, JournalModule, JournalTagsModule, JournalReflectionsModule, JournalMediaModule],
+  imports: [TypeOrmModule.forRoot(typeConfig()), EmotionsModule, EmotionsByUserModule,AuthModule, UsersModule, JournalModule, JournalTagsModule, JournalReflectionsModule, JournalMediaModule, GeminiModule],
   controllers: [AppController],
   providers: [AppService, {
       provide: APP_GUARD,
