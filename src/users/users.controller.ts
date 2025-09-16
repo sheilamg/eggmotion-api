@@ -3,7 +3,8 @@ import { UsersService } from "./users.service";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { UserRole } from "./enums/user-role.enum";
 
-/// user: shoru@gmail.com pass:1234
+/// user: shoru@gmail.com pass:1234 (dejó de funcar la pass)
+/// user: shoru2@gmail.com pass:1234 
 
 @Controller('users')
 export class UsersController {

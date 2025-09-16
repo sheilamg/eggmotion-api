@@ -1,4 +1,4 @@
-import { IsString, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsOptional } from 'class-validator';
 
 export class GenerateTextDto {
     @IsString()
@@ -7,8 +7,4 @@ export class GenerateTextDto {
     @IsOptional()
     @IsString()
     model?: string;
-
-    @IsOptional()
-    @IsNumber()
-    maxOutputTokens?: number;
 }

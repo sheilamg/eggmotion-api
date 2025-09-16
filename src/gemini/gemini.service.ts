@@ -1,7 +1,6 @@
-// src/gemini/gemini.service.ts
 import { Injectable, Logger } from '@nestjs/common';
 import { GoogleGenAI } from '@google/genai';
-import pRetry from 'p-retry';
+import { GEMINI_OUTPUT_STRUCTURE, GEMINI_SYSTEM_INSTRUCTION } from './utils/gemini-config';
 
 @Injectable()
 export class GeminiService {
@@ -22,17 +21,20 @@ export class GeminiService {
   /**
    * Genera texto desde Gemini (con reintentos suaves)
    */
-  async generateText(prompt: string, opts?: { model?: string; maxOutputTokens?: number; temperature?: number; }) {
-    const model = opts?.model || this.defaultModel;
+  async generateText(prompt: string) {
+    const model = this.defaultModel;
 
     const doRequest = async () => {
-      // Llamada principal al SDK: generateContent
       const response = await this.client.models.generateContent({
         model,
         contents: prompt,
-        // parámetros opcionales (ajustá según docs)
-        ...(opts?.maxOutputTokens ? { maxOutputTokens: opts.maxOutputTokens } : {}),
-        ...(opts?.temperature ? { temperature: opts.temperature } : {}),
+        config: {
+          thinkingConfig: {
+            thinkingBudget: 0, // Disables thinking
+          },
+          systemInstruction: GEMINI_SYSTEM_INSTRUCTION,
+          responseSchema: GEMINI_OUTPUT_STRUCTURE
+        },
       });
 
       // El SDK devuelve distintas formas; response.text es lo usual (ver quickstart).
@@ -40,7 +42,7 @@ export class GeminiService {
       return response?.text ?? (Array.isArray(response?.candidates) ? response.candidates.map(c => c.content).join('\n') : '');
     };
 
-    // Reintentar 2 veces si falla por problemas transitorios
-    return pRetry(() => doRequest(), { retries: 2 });
+    // Ejecutar una sola vez sin reintentos
+    return doRequest();
   }
 }

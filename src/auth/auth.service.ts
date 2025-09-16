@@ -23,12 +23,12 @@ export class AuthService {
   }
 
   async login(user: any) {
-    const payload = { email: user.email, sub: user.id, role: user.role };
+    const payload = { email: user?.email, sub: user?.id, role: user?.role };
     
     // Generar access token y refresh token
     const access_token = this.jwtService.sign(payload);
     const refresh_token = this.jwtService.sign(
-      { sub: user.id, type: 'refresh' },
+      { sub: user?.id, type: 'refresh' },
       { expiresIn: envConfig.jwt.refreshExpiresIn }
     );
 
@@ -37,10 +37,10 @@ export class AuthService {
       refresh_token,
       expires_in: envConfig.jwt.expiresIn,
       user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
+        id: user?.id,
+        email: user?.email,
+        name: user?.name,
+        role: user?.role,
       },
     };
   }

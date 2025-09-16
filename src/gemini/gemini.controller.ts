@@ -1,4 +1,3 @@
-// src/gemini/gemini.controller.ts
 import { Controller, Post, Body, HttpException, HttpStatus } from '@nestjs/common';
 import { GeminiService } from './gemini.service';
 import { GenerateTextDto } from './dto/generate-text.dto';
@@ -9,12 +8,12 @@ export class GeminiController {
 
   @Post('generate')
   async generate(@Body() body: GenerateTextDto) {
-    const { prompt, model, maxOutputTokens } = body;
+    const { prompt } = body;
     if (!prompt) {
       throw new HttpException('prompt is required', HttpStatus.BAD_REQUEST);
     }
     try {
-      const text = await this.geminiService.generateText(prompt, { model, maxOutputTokens });
+      const text = await this.geminiService.generateText(prompt);
       return { text };
     } catch (err) {
       // logger y error friendly
@@ -32,7 +31,7 @@ export class GeminiController {
     const prompt = `Analiza este texto y devuelve: 1) emoción principal (una palabra), 2) intensidad en escala 1-5, 3) una sugerencia breve para mejorar el estado emocional. Responde en JSON con las claves: emotion, intensity, suggestion. Texto: "${text}"`;
 
     try {
-      const raw = await this.geminiService.generateText(prompt, { maxOutputTokens: 200 });
+      const raw = await this.geminiService.generateText(prompt);
       // Intentamos parsear JSON si Gemini devuelve JSON (prompt lo solicita)
       try {
         const parsed = JSON.parse(raw);
