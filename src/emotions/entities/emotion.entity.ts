@@ -16,6 +16,30 @@ export class Emotion extends AuditableEntity{
   @Column({ type: 'text', nullable: true })
   description: string;
 
+  @Column({ nullable: true })
+  origin: string;
+
+  @Column({ nullable: true })
+  classification: string;
+
+  @Column({ type: 'int', nullable: true })
+  intensity: number;
+
+  @Column({ type: 'json', nullable: true })
+  tags: string[];
+
+  @Column({ type: 'json', nullable: true })
+  related_emotions: string[];
+
+  @Column({ type: 'text', nullable: true })
+  context: string;
+
+  @Column({ type: 'json', nullable: true })
+  triggers: string[];
+
+  @Column({ type: 'json', nullable: true })
+  keywords: string[];
+
   @OneToMany(() => EmotionByUser, (ebu) => ebu.emotion)
   usages: EmotionByUser[];
 } 
